@@ -63,9 +63,43 @@ Complete a month cost analysis of each Azure resource to give an estimate total 
 
 | Azure Resource | Service Tier | Monthly Cost |
 | ------------ | ------------ | ------------ |
-| *Azure Postgres Database* |     |              |
-| *Azure Service Bus*   |         |              |
-| ...                   |         |              |
+| *Azure Postgres Database* |   Basic  |       $50.51       |
+| *Azure Postgres Database* |   General Purpose  |       $201.91       |
+| *Azure Postgres Database* |   Memory Optimized  |       $219.72       |
+| *Azure Service Bus*   |      Basic   |       $0.05       |
+| *Azure Service Bus*   |      Standard   |       $9.81       |
+| *Azure Service Bus*   |      Standard   |       $677.08       |
+| *Azure App Service*           |      Free   |         $0.00     |
+| *Azure App Service*           |      Basic   |         $13.14    |
+| *Azure App Service*           |      Standard   |         $69.35    |
+| *Azure App Service*           |      Premium V2   |         $83.95    |
+| *Azure App Service*           |      Premium V3   |         $102.93    |
+| *Azure App Service*           |      Isolated   |         $1,118.36   |
+| *Azure App Service*           |      Isolated V2  |         $302.22   |
+| *Azure App Service*           |      Isolated V3  |         $8,304.48   |
+|*Azure Function App*|  Consumption      |      $0.00     |
+|*Azure Function App*|  Consumption      |      $324.78     |
 
+Because i choose most of the resource at the cheapest pricing tier, so the monthly estimated cost for this project at production level environment is $101.66
 ## Architecture Explanation
-This is a placeholder section where you can provide an explanation and reasoning for your architecture selection for both the Azure Web App and Azure Function.
+1. The Triggering mail through the web app architecture
+   The previos architecture is on-premise. It include: an on-premise database and an on-premmise server.
+   it has some advantages: simple to build, develop and mantain.
+   But it has some disavantages:
+   - The web app cannot be automatically scalable at peak time when there 's lot of user requests
+   - When admin want to send out notification email for all attendees, it will take a lot of time because the app need to loop through all the attendees in DB and send email to each of them. it may cause to high CPU or disk utilization.
+   - The current architecture is expensive because the app owner has to take responsibility for upfront-cost
+   - There maybe much downtime when deploying because it is low availability.
+2. The Azure Queue & Functions architecture
+   The Current Architecture is cloud-based and includes:
+   - An Azure App service to host the web app
+   - An Azure Service Bus to transfer data in queue to an azure function app
+   - An Azure Function App to hanlde sending email task.
+   it has some disadvantages like 
+   - it is more complicated to build, develop and mantain
+    and it has some advantages:
+   - By using App service , The app can be scalable easily at peak time and can turn back to normal level when there few requests.
+   - Sending email task is an cpu-hungry task and is outsourced to Azure Service Bus and Azure Function App. So the compute resource for web app might be at high availability.
+   - Using Azure Service Bus, the app can be decoupled from sending email task, and message can be transfer to many system with no downtime rather than just one system with normal back-end service.
+   - Using Azure Function App, the code is more simple (serverless) and run only when there 's message from Azure Service Bus.
+   - The app owner only pay for what they use(Pay as you go model), they don't need to pay for upfront-cost, resulting in being more cost-effective.
