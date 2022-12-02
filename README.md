@@ -84,20 +84,20 @@ Because i choose most of the resource at the cheapest pricing tier, so the month
 ## Architecture Explanation
 1. The Triggering mail through the web app architecture
    The previos architecture is on-premise. It include: an on-premise database and an on-premmise server.
-   it has some advantages: simple to build, develop and mantain.
-   But it has some disavantages:
+   **it has some advantages**: simple to build, develop and mantain.
+   **But it has some disavantages:**
    - The web app cannot be automatically scalable at peak time when there 's lot of user requests
    - When admin want to send out notification email for all attendees, it will take a lot of time because the app need to loop through all the attendees in DB and send email to each of them. it may cause to high CPU or disk utilization.
    - The current architecture is expensive because the app owner has to take responsibility for upfront-cost
    - There maybe much downtime when deploying because it is low availability.
 2. The Azure Queue & Functions architecture
-   The Current Architecture is cloud-based and includes:
+   **The Current Architecture is cloud-based and includes:**
    - An Azure App service to host the web app
    - An Azure Service Bus to transfer data in queue to an azure function app
    - An Azure Function App to hanlde sending email task.
-   it has some disadvantages like 
+   **it has some disadvantages like **
    - it is more complicated to build, develop and mantain
-    and it has some advantages:
+    **and it has some advantages:**
    - By using App service , The app can be scalable easily at peak time and can turn back to normal level when there few requests.
    - Sending email task is an cpu-hungry task and is outsourced to Azure Service Bus and Azure Function App. So the compute resource for web app might be at high availability.
    - Using Azure Service Bus, the app can be decoupled from sending email task, and message can be transfer to many system with no downtime rather than just one system with normal back-end service.
