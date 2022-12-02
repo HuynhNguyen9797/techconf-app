@@ -95,9 +95,9 @@ Because i choose most of the resource at the cheapest pricing tier, so the month
    - An Azure App service to host the web app
    - An Azure Service Bus to transfer data in queue to an azure function app
    - An Azure Function App to hanlde sending email task.
-   **it has some disadvantages like **
+  - ** it has some disadvantages like **
    - it is more complicated to build, develop and mantain
-    **and it has some advantages:**
+    - **and it has some advantages:**
    - By using App service , The app can be scalable easily at peak time and can turn back to normal level when there few requests.
    - Sending email task is an cpu-hungry task and is outsourced to Azure Service Bus and Azure Function App. So the compute resource for web app might be at high availability.
    - Using Azure Service Bus, the app can be decoupled from sending email task, and message can be transfer to many system with no downtime rather than just one system with normal back-end service.
